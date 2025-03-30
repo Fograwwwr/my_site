@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .nav {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #3498db;
+            margin: 0 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Навигация -->
+        <div class="nav">
+            <a href="{% url 'home' %}">Главная</a>
+            <a href="{% url 'about' %}">О нас</a>
+            <a href="{% url 'catalog' %}">Каталог</a>
+        </div>
+
+        <h1>О нашей компании</h1>
+        
+        <p>Добро пожаловать на сайт! Мы занимаемся продажей качественных товаров с 2020 года.</p>
+
+        <h2>Наша миссия</h2>
+        <p>Мы стремимся сделать ваши покупки удобными, быстрыми и приятными.</p>
+
+        <h2>Контакты</h2>
+        <p>Email: info@example.com<br>Телефон: +7 (999) 123-45-67</p>
+    </div>
+</body>
+</html>
