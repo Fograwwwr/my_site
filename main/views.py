@@ -1,5 +1,13 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView
+from django.views.generic import ListView
+from django.shortcuts import redirect
+from .models import Product, Cart
+from django.contrib.auth.views import LoginView as BaseLoginView
+from django.contrib import messages
 
 def about(request):
     return render(request, 'main/about.html')
@@ -57,5 +65,14 @@ def add_to_cart(request, product_id):
 
     return redirect('catalog')
 
+class LoginView(BaseLoginView):
+    template_name = 'login.html'
+    form_class = AuthenticationForm
 
+    def form_invalid(self, form):
+        messages.error(self.request, 'Неверное имя пользователя или пароль.')
+        return redirect(self.request.META.get('HTTP_REFERER', '/'))
+
+    def get_success_url(self):
+        return self.request.GET.get('next', '/')
 

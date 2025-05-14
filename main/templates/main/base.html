@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Мой сайт{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 1rem;
+            padding: 0.5rem;
+            transition: all 0.3s;
+        }
+        nav a:hover {
+            background-color: #555;
+            border-radius: 3px;
+        }
+        .auth {
+            display: flex;
+            align-items: center;
+        }
+        .auth form {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+        .auth input[type="text"], .auth input[type="password"] {
+            margin-right: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .auth button {
+            padding: 0.5rem 1rem;
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .auth button:hover {
+            background-color: #166fe5;
+        }
+        .auth a {
+            color: #1877f2;
+            text-decoration: none;
+            margin-left: 0.5rem;
+        }
+        .messages {
+            margin: 1rem;
+        }
+        .messages .error {
+            color: #ff0000;
+            font-size: 0.9rem;
+        }
+        main {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{% url 'home' %}">Главная</a>
+            <a href="{% url 'catalog' %}">Каталог</a>
+            <a href="{% url 'about' %}">О нас</a>
+            <a href="{% url 'cart' %}">Корзина</a>
+        </nav>
+        <div class="auth">
+            {% if user.is_authenticated %}
+                <p>Добро пожаловать, {{ user.username }}</p>
+                <a href="{% url 'logout' %}">Выйти</a>
+            {% else %}
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <input type="text" name="username" placeholder="Имя пользователя" required>
+                    <input type="password" name="password" placeholder="Пароль" required>
+                    <button type="submit">Войти</button>
+                </form>
+                <a href="{% url 'register' %}">Регистрация</a>
+            {% endif %}
+        </div>
+    </header>
+    <main>
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        
+    </footer>
+</body>
+</html>

@@ -1,71 +1,12 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Главная страница</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
+{% extends 'main/base.html' %}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+{% block title %}Главная страница{% endblock %}
 
-        nav {
-            background-color: #333;
-            padding: 1rem;
-            border-radius: 5px;
-            margin-bottom: 2rem;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-right: 20px;
-            padding: 10px;
-            transition: all 0.3s;
-        }
-
-        nav a:hover {
-            background-color: #555;
-            border-radius: 3px;
-        }
-
-        .content {
-            background: white;
-            padding: 2rem;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .welcome-text {
-            font-size: 1.2rem;
-            line-height: 1.6;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-       
-        <nav>
-            <a href="{% url 'home' %}">Главная</a>
-            <a href="{% url 'catalog' %}">Каталог</a>
-            <a href="{% url 'about' %}">О нас</a>
-            <a href="{% url 'register' %}">Регистрация</a>
-            <a href="{% url 'cart' %}">Корзина</a>
-        </nav>
-
-         
-        <div class="content">
+{% block content %}
+    <div class="container" style="max-width: 1200px; margin: 0 auto;">
+        <div class="content" style="background: white; padding: 2rem; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
             <h1>Добро пожаловать в наш магазин!</h1>
-            
-            <div class="welcome-text">
+            <div class="welcome-text" style="font-size: 1.2rem; line-height: 1.6;">
                 <p>Мы рады приветствовать вас на нашем сайте. Здесь вы найдете:</p>
                 <ul>
                     <li>Широкий ассортимент товаров в каталоге</li>
@@ -73,10 +14,8 @@
                     <li>Удобную корзину покупок</li>
                     <li>Подробную информацию о компании</li>
                 </ul>
-                
                 <p>Начните с выбора товаров в нашем каталоге или зарегистрируйтесь для получения дополнительных возможностей!</p>
             </div>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}
