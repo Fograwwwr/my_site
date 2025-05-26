@@ -32,9 +32,16 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('home')
 
 
-class CatalogView(TemplateView):
+class CatalogView(ListView):
     model = Product
     template_name = 'catalog.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        top_categories = Category.objects.filter(parent__isnull=True)
+        print(f"Top categories: {top_categories}")
+        context['top_categories'] = top_categories
+        return context
 
 
 
