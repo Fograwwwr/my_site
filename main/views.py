@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.views.generic import ListView
 from django.shortcuts import redirect
-from .models import Product, Cart
+from .models import Product, Cart, Category
 from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib import messages
 
@@ -26,27 +26,17 @@ class HomeView(TemplateView):
     template_name = 'home.html'
 
 
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
-
 class RegisterView(CreateView):
     form_class = UserCreationForm
     template_name = 'registration/register.html'
     success_url = reverse_lazy('home')
 
 
-
-from django.views.generic import ListView
-from .models import Product
-
-class CatalogView(ListView):
+class CatalogView(TemplateView):
     model = Product
     template_name = 'catalog.html'
 
 
-from django.shortcuts import redirect
-from .models import Product, Cart
 
 def add_to_cart(request, product_id):
     product = Product.objects.get(id=product_id)

@@ -1,0 +1,41 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Каталог товаров{% endblock %}
+
+{% block content %}
+    <div class="container" style="max-width: 1200px; margin: 0 auto;">
+        <h1 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">Каталог товаров</h1>
+        <ul style="list-style: none; padding: 0;">
+        {% for top_cat in top_categories %}
+            <li style="margin-bottom: 20px;">
+                <h2 style="color: #333; font-size: 1.5rem;">{{ top_cat.name }}</h2>
+                <ul style="list-style: none; padding-left: 20px;">
+                {% for sub_cat in top_cat.children.all %}
+                    <li style="margin-bottom: 15px;">
+                        <h3 style="color: #555; font-size: 1.2rem;">{{ sub_cat.name }}</h3>
+                        <ul style="list-style: none; padding-left: 20px;">
+                        {% for product in sub_cat.product_set.all %}
+                            <li style="margin-bottom: 10px;">
+                                {{ product.name }} - {{ product.price }} руб. - {{ product.stock_status }}
+                                <a href="{% url 'add_to_cart' product.id %}" style="color: #1877f2; text-decoration: none; margin-left: 10px;">Добавить в корзину</a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+                {% if top_cat.product_set.all %}
+                    <ul style="list-style: none; padding-left: 20px;">
+                    {% for product in top_cat.product_set.all %}
+                        <li style="margin-bottom: 10px;">
+                            {{ product.name }} - {{ product.price }} руб. - {{ product.stock_status }}
+                            <a href="{% url 'add_to_cart' product.id %}" style="color: #1877f2; text-decoration: none; margin-left: 10px;">Добавить в корзину</a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+                </ul>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
