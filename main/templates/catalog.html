@@ -12,11 +12,12 @@
                 <ul style="list-style: none; padding-left: 20px;">
                 {% for sub_cat in top_cat.children.all %}
                     <li style="margin-bottom: 15px;">
-                        <h3 style="color: #555; font-size: 1.2rem;">{{ sub_cat.name }}</h3>
+                        <h3 style="color: #555; font-size: 1.2rem;"><a href="{% url 'subcategory' category_id=sub_cat.id %}">{{ sub_cat.name }}</a></h3>
                         <ul style="list-style: none; padding-left: 20px;">
                         {% for product in sub_cat.product_set.all %}
                             <li style="margin-bottom: 10px;">
                                 {{ product.name }} - {{ product.price }} руб. - {{ product.stock_status }}
+                                <a href="{% url 'product_detail' pk=product.pk %}">{{ product.name }}</a>
                                 <a href="{% url 'add_to_cart' product.id %}" style="color: #1877f2; text-decoration: none; margin-left: 10px;">Добавить в корзину</a>
                             </li>
                         {% endfor %}

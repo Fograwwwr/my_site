@@ -1,0 +1,13 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block content %}
+    <div class="container" style="max-width: 800px; margin: 0 auto;">
+        <h1 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">{{ object.name }}</h1>
+        <p>{{ object.description }}</p>
+        <p>Цена: {{ object.price }} руб.</p>
+        <p>Осталось: {{ object.stock_status }}</p>
+        <a href="{% url 'add_to_cart' object.id %}" style="color: #1877f2; text-decoration: none;">Добавить в корзину</a>
+    </div>
+{% endblock %}

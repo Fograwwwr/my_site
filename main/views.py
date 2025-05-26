@@ -8,6 +8,22 @@ from django.shortcuts import redirect
 from .models import Product, Cart, Category
 from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib import messages
+from django.views.generic import DetailView
+from django.shortcuts import get_object_or_404
+
+
+class SubCategoryView(ListView):
+    model = Product
+    template_name = 'main/subcategory.html'
+
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, id=self.kwargs['category_id'])
+        return Product.objects.filter(category=self.category)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = self.category
+        return context
 
 def about(request):
     return render(request, 'main/about.html')
@@ -73,3 +89,7 @@ class LoginView(BaseLoginView):
     def get_success_url(self):
         return self.request.GET.get('next', '/')
 
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'main/product_detail.html'

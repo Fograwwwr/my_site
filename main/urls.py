@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegisterView, HomeView, CatalogView, add_to_cart, view_cart, about
+from .views import RegisterView, HomeView, CatalogView, ProductDetailView, SubCategoryView, add_to_cart, view_cart, about
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
@@ -11,6 +11,9 @@ urlpatterns = [
     path('catalog/', CatalogView.as_view(), name='catalog'),
     path('add-to-cart/<int:product_id>/', add_to_cart, name='add_to_cart'),
     path('cart/', view_cart, name='cart'),
+    path('catalog/<int:category_id>/', SubCategoryView.as_view(), name='subcategory'),
+    path('product/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
+    
 ]
 
 
