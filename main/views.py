@@ -1,15 +1,12 @@
 from django.views.generic import TemplateView
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-from django.views.generic import ListView
-from django.shortcuts import redirect
-from .models import Product, Cart, Category
+from django.views.generic import ListView, DetailView
+from .models import Product, Cart, Category, CartItem
 from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib import messages
-from django.views.generic import DetailView
-from django.shortcuts import get_object_or_404
 
 
 class SubCategoryView(ListView):
@@ -36,7 +33,7 @@ def view_cart(request):
         cart_items = request.session.get('cart', [])
         products = Product.objects.filter(id__in=cart_items)
 
-    return render(request, 'cart.html', {'products': products})
+    return render(request, 'main/cart.html', {'products': products})
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -59,24 +56,24 @@ class CatalogView(ListView):
         context['top_categories'] = top_categories
         return context
 
+def remove_from_cart(request, item_id):
+    cart_item = get_object_or_404(CartItem, id=item_id)
+    cart_item.delete()
+    return redirect('cart')
 
 
 def add_to_cart(request, product_id):
-    product = Product.objects.get(id=product_id)
-
+    product = get_object_or_404(Product, id=product_id)
     if request.user.is_authenticated:
-        # Для зарегистрированных пользователей
         cart, created = Cart.objects.get_or_create(user=request.user)
-        cart.items.add(product)
     else:
-        # Для анонимных пользователей (через сессии)
-        if 'cart' not in request.session:
-            request.session['cart'] = []
-        if product_id not in request.session['cart']:
-            request.session['cart'].append(product_id)
-            request.session.modified = True
+        cart, created = Cart.objects.get_or_create(user=None)
+    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+    if not created:
+        cart_item.quantity += 1
+    cart_item.save()
+    return redirect('cart')
 
-    return redirect('catalog')
 
 class LoginView(BaseLoginView):
     template_name = 'login.html'
@@ -93,3 +90,12 @@ class LoginView(BaseLoginView):
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'main/product_detail.html'
+
+def update_cart(request, item_id):
+    cart_item = get_object_or_404(CartItem, id=item_id)
+    if request.method == 'POST':
+        quantity = int(request.POST.get('quantity', 1))
+        if quantity > 0:
+            cart_item.quantity = quantity
+            cart_item.save()
+    return redirect('cart')
