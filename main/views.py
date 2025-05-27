@@ -38,7 +38,7 @@ def view_cart(request):
                 product = Product.objects.get(id=int(product_id))
                 cart_items.append({'product': product, 'quantity': quantity})
                 total_price += product.price * quantity
-    return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
+    return render(request, 'main/cart.html', {'cart_items': cart_items, 'total_price': total_price})
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -71,12 +71,18 @@ def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     if request.user.is_authenticated:
         cart, created = Cart.objects.get_or_create(user=request.user)
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+        if not created:
+            cart_item.quantity += 1
+        cart_item.save()
     else:
-        cart, created = Cart.objects.get_or_create(user=None)
-    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-    if not created:
-        cart_item.quantity += 1
-    cart_item.save()
+        if 'cart' not in request.session:
+            request.session['cart'] = {}
+        if str(product_id) in request.session['cart']:
+            request.session['cart'][str(product_id)] += 1
+        else:
+            request.session['cart'][str(product_id)] = 1
+        request.session.modified = True
     return redirect('cart')
 
 
