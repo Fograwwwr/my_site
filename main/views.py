@@ -25,15 +25,7 @@ class SubCategoryView(ListView):
 def about(request):
     return render(request, 'main/about.html')
 
-def view_cart(request):
-    if request.user.is_authenticated:
-        cart = Cart.objects.get(user=request.user)
-        products = cart.items.all()
-    else:
-        cart_items = request.session.get('cart', [])
-        products = Product.objects.filter(id__in=cart_items)
 
-    return render(request, 'main/cart.html', {'products': products})
 
 class HomeView(TemplateView):
     template_name = 'home.html'

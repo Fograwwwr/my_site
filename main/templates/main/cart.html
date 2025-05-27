@@ -2,29 +2,23 @@
 
 {% block title %}Корзина{% endblock %}
 
-<form method="post" action="{% url 'update_cart' item.id %}" style="display: inline;">
-    {% csrf_token %}
-    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="width: 50px;">
-    <button type="submit" style="color: #1877f2; text-decoration: none;">Обновить</button>
-</form>
-
 {% block content %}
     <div class="container" style="max-width: 1200px; margin: 0 auto;">
         <h1 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">Корзина</h1>
         {% if cart_items %}
             <ul style="list-style: none; padding: 0;">
-            {% for item in cart_items %}
+            {% for products in cart_items %}
                 <li style="margin-bottom: 10px; display: flex; align-items: center;">
-                    {% if item.product.image %}
-                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="50" height="50" style="margin-right: 10px;">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" width="50" height="50" style="margin-right: 10px;">
                     {% else %}
                         <img src="/media/default_product_image.jpg" alt="Default Image" width="50" height="50" style="margin-right: 10px;">
                     {% endif %}
-                    <a href="{% url 'product_detail' pk=item.product.pk %}" style="color: #2c3e50; text-decoration: none;">
-                        {{ item.product.name }}
+                    <a href="{% url 'product_detail' pk=product.pk %}" style="color: #2c3e50; text-decoration: none;">
+                        {{ product.name }}
                     </a>
-                    - {{ item.product.price }} руб. x {{ item.quantity }} = {{ item.product.price|floatformat:2 }} руб.
-                    <a href="{% url 'remove_from_cart' item.id %}" style="color: #ff0000; text-decoration: none; margin-left: 10px;">Удалить</a>
+                    - {{ product.price }} руб. x {{ product.quantity }} = {{ product.price|floatformat:2 }} руб.
+                    <a href="{% url 'remove_from_cart' product.id %}" style="color: #ff0000; text-decoration: none; margin-left: 10px;">Удалить</a>
                 </li>
             {% endfor %}
             </ul>
