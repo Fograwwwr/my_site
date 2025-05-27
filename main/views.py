@@ -25,7 +25,20 @@ class SubCategoryView(ListView):
 def about(request):
     return render(request, 'main/about.html')
 
-
+def view_cart(request):
+    if request.user.is_authenticated:
+        cart = Cart.objects.get(user=request.user)
+        cart_items = CartItem.objects.filter(cart=cart)
+        total_price = sum(item.product.price * item.quantity for item in cart_items)
+    else:
+        cart_items = []
+        total_price = 0
+        if 'cart' in request.session:
+            for product_id, quantity in request.session['cart'].items():
+                product = Product.objects.get(id=int(product_id))
+                cart_items.append({'product': product, 'quantity': quantity})
+                total_price += product.price * quantity
+    return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
 
 class HomeView(TemplateView):
     template_name = 'home.html'
