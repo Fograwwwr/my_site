@@ -2,6 +2,9 @@ from django.urls import path
 from .views import RegisterView, HomeView, CatalogView, ProductDetailView, SubCategoryView, add_to_cart, view_cart, about
 from django.contrib.auth.views import LoginView, LogoutView
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path("about/", about, name= "about"),

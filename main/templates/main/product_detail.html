@@ -5,6 +5,11 @@
 {% block content %}
     <div class="container" style="max-width: 800px; margin: 0 auto;">
         <h1 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">{{ object.name }}</h1>
+        {% if object.image %}
+            <img src="{{ object.image.url }}" alt="{{ object.name }}" style="max-width: 100%; height: auto;">
+        {% else %}
+            <img src="/media/default_product_image.jpg" alt="Default Image" style="max-width: 100%; height: auto;">
+        {% endif %}
         <p>{{ object.description }}</p>
         <p>Цена: {{ object.price }} руб.</p>
         <p>Осталось: {{ object.stock_status }}</p>
