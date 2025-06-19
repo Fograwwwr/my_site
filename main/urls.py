@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegisterView, HomeView, CatalogView, ProductDetailView, SubCategoryView, add_to_cart, view_cart, about, update_cart, remove_from_cart
+from .views import RegisterView, HomeView, CatalogView, ProductDetailView, SubCategoryView, add_to_cart, view_cart, about, update_cart, remove_from_cart, remove_from_cart_anonymous
 from django.contrib.auth.views import LoginView, LogoutView
 
 from django.conf import settings
@@ -16,6 +16,7 @@ urlpatterns = [
     path('cart/', view_cart, name='cart'),
     path('catalog/<int:category_id>/', SubCategoryView.as_view(), name='subcategory'),
     path('remove-from-cart/<int:item_id>/', remove_from_cart, name='remove_from_cart'),
+    path('remove-from-cart-anonymous/<int:product_id>/', remove_from_cart_anonymous, name='remove_from_cart_anonymous'),
     path('product/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
     path('update-cart/<int:item_id>/', update_cart, name='update_cart'),
     

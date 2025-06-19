@@ -66,6 +66,12 @@ def remove_from_cart(request, item_id):
     cart_item.delete()
     return redirect('cart')
 
+def remove_from_cart_anonymous(request, product_id):
+    if 'cart' in request.session and str(product_id) in request.session['cart']:
+        del request.session['cart'][str(product_id)]
+        request.session.modified = True
+    return redirect('cart')
+
 
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
